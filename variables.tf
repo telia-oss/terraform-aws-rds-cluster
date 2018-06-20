@@ -38,7 +38,7 @@ variable "engine" {
 }
 
 variable "instance_type" {
-  description = " The DB instance class to use."
+  description = "The DB instance class to use."
   default     = "db.r4.large"
 }
 
