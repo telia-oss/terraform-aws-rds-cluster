@@ -10,6 +10,7 @@ resource "aws_rds_cluster" "main" {
   master_password              = "${var.password}"
   port                         = "${var.port}"
   engine                       = "${var.engine}"
+  engine_version               = "${var.engine_version}"
   backup_retention_period      = 7
   preferred_backup_window      = "02:00-03:00"
   preferred_maintenance_window = "wed:04:00-wed:04:30"
@@ -29,6 +30,7 @@ resource "aws_rds_cluster_instance" "main" {
   cluster_identifier   = "${aws_rds_cluster.main.id}"
   instance_class       = "${var.instance_type}"
   engine               = "${var.engine}"
+  engine_version       = "${var.engine_version}"
   db_subnet_group_name = "${aws_db_subnet_group.main.name}"
   publicly_accessible  = "${var.publicly_accessible}"
 

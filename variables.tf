@@ -37,6 +37,11 @@ variable "engine" {
   default     = "aurora-postgresql"
 }
 
+variable "engine_version" {
+  description = "The name of the database engine to be used for this DB cluster."
+  default     = "9.6.6"
+}
+
 variable "instance_type" {
   description = "The DB instance class to use."
   default     = "db.r4.large"
