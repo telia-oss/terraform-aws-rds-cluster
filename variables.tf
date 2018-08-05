@@ -38,7 +38,7 @@ variable "engine" {
 }
 
 variable "engine_version" {
-  description = "The name of the database engine to be used for this DB cluster."
+  description = "The engine version to use."
   default     = "9.6.6"
 }
 
