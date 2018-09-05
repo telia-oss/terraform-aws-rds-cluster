@@ -63,7 +63,7 @@ variable "snapshot_identifier" {
 }
 
 variable "storage_encrypted" {
-  description = "Specifies whether the DB instance is encrypted."
+  description = "Specifies whether the DB cluster is encrypted."
   default     = "false"
 }
 
