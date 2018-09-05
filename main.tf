@@ -26,6 +26,7 @@ resource "aws_rds_cluster" "main" {
 
   storage_encrypted = "${var.storage_encrypted}"
 
+  kms_key_id                   = "${var.kms_key_arn}"
   # NOTE: This is duplicated because subnet_group does not return the name.
   db_subnet_group_name = "${var.name_prefix}-subnet-group"
 
