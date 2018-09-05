@@ -24,6 +24,8 @@ resource "aws_rds_cluster" "main" {
   skip_final_snapshot          = "${var.skip_final_snapshot}"
   vpc_security_group_ids       = ["${aws_security_group.main.id}"]
 
+  storage_encrypted = "${var.storage_encrypted}"
+
   # NOTE: This is duplicated because subnet_group does not return the name.
   db_subnet_group_name = "${var.name_prefix}-subnet-group"
 
