@@ -69,7 +69,7 @@ variable "storage_encrypted" {
 
 variable "kms_key_arn" {
   description = "The ARN for the KMS encryption key. When specifying kms_key_id, storage_encrypted needs to be set to true."
-  default = ""
+  default     = ""
 }
 
 variable "skip_final_snapshot" {
