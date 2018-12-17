@@ -64,7 +64,7 @@ variable "snapshot_identifier" {
 
 variable "storage_encrypted" {
   description = "Specifies whether the DB cluster is encrypted."
-  default     = "false"
+  default     = "true"
 }
 
 variable "kms_key_arn" {
