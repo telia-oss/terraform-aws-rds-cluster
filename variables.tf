@@ -74,7 +74,7 @@ variable "kms_key_arn" {
 
 variable "skip_final_snapshot" {
   description = "Determines whether a final DB snapshot is created before the DB cluster is deleted. If true is specified, no DB snapshot is created."
-  default     = "true"
+  default     = "false"
 }
 
 variable "tags" {
