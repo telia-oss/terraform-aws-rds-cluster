@@ -25,8 +25,7 @@ resource "aws_rds_cluster" "main" {
   vpc_security_group_ids       = ["${aws_security_group.main.id}"]
 
   storage_encrypted = "${var.storage_encrypted}"
-
-  kms_key_id = "${var.kms_key_arn}"
+  kms_key_id        = "${var.kms_key_arn}"
 
   # NOTE: This is duplicated because subnet_group does not return the name.
   db_subnet_group_name = "${var.name_prefix}-subnet-group"
@@ -43,6 +42,8 @@ resource "aws_rds_cluster_instance" "main" {
   engine_version       = "${var.engine_version}"
   db_subnet_group_name = "${aws_db_subnet_group.main.name}"
   publicly_accessible  = "${var.publicly_accessible}"
+
+  performance_insights_enabled = "${var.performance_insights_enabled}"
 
   tags = "${merge(var.tags, map("Name", "${var.name_prefix}-instance-${count.index + 1}"))}"
 }
