@@ -77,6 +77,11 @@ variable "skip_final_snapshot" {
   default     = "false"
 }
 
+variable "performance_insights_enabled" {
+  description = "Specifies whether Performance Insights is enabled or not."
+  default     = "false"
+}
+
 variable "tags" {
   description = "A map of tags (key-value pairs) passed to resources."
   type        = "map"
