@@ -11,7 +11,7 @@ variable "vpc_id" {
 
 variable "subnet_ids" {
   description = "A list of VPC subnet IDs."
-  type        = "list"
+  type        = list(string)
 }
 
 variable "username" {
@@ -84,6 +84,7 @@ variable "performance_insights_enabled" {
 
 variable "tags" {
   description = "A map of tags (key-value pairs) passed to resources."
-  type        = "map"
+  type        = map(string)
   default     = {}
 }
+

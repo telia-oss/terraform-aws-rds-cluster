@@ -1,7 +1,8 @@
 # -------------------------------------------------------------------------------
 # Resources
 # -------------------------------------------------------------------------------
-data "aws_availability_zones" "available" {}
+data "aws_availability_zones" "available" {
+}
 
 resource "random_string" "suffix" {
   length  = 8
@@ -10,62 +11,82 @@ resource "random_string" "suffix" {
 
 resource "aws_rds_cluster" "main" {
   cluster_identifier           = "${var.name_prefix}-cluster"
-  database_name                = "${var.database_name}"
-  master_username              = "${var.username}"
-  master_password              = "${var.password}"
-  port                         = "${var.port}"
-  engine                       = "${var.engine}"
-  engine_version               = "${var.engine_version}"
+  database_name                = var.database_name
+  master_username              = var.username
+  master_password              = var.password
+  port                         = var.port
+  engine                       = var.engine
+  engine_version               = var.engine_version
   backup_retention_period      = 7
   preferred_backup_window      = "02:00-03:00"
   preferred_maintenance_window = "wed:04:00-wed:04:30"
-  snapshot_identifier          = "${var.snapshot_identifier}"
+  snapshot_identifier          = var.snapshot_identifier
   final_snapshot_identifier    = "${var.name_prefix}-final-${random_string.suffix.id}"
-  skip_final_snapshot          = "${var.skip_final_snapshot}"
-  vpc_security_group_ids       = ["${aws_security_group.main.id}"]
+  skip_final_snapshot          = var.skip_final_snapshot
+  vpc_security_group_ids       = [aws_security_group.main.id]
 
-  storage_encrypted = "${var.storage_encrypted}"
-  kms_key_id        = "${var.kms_key_arn}"
+  storage_encrypted = var.storage_encrypted
+  kms_key_id        = var.kms_key_arn
 
   # NOTE: This is duplicated because subnet_group does not return the name.
   db_subnet_group_name = "${var.name_prefix}-subnet-group"
 
-  tags = "${merge(var.tags, map("Name", "${var.name_prefix}-cluster"))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "${var.name_prefix}-cluster"
+    },
+  )
 }
 
 resource "aws_rds_cluster_instance" "main" {
-  count                = "${var.instance_count}"
+  count                = var.instance_count
   identifier           = "${var.name_prefix}-instance-${count.index + 1}"
-  cluster_identifier   = "${aws_rds_cluster.main.id}"
-  instance_class       = "${var.instance_type}"
-  engine               = "${var.engine}"
-  engine_version       = "${var.engine_version}"
-  db_subnet_group_name = "${aws_db_subnet_group.main.name}"
-  publicly_accessible  = "${var.publicly_accessible}"
+  cluster_identifier   = aws_rds_cluster.main.id
+  instance_class       = var.instance_type
+  engine               = var.engine
+  engine_version       = var.engine_version
+  db_subnet_group_name = aws_db_subnet_group.main.name
+  publicly_accessible  = var.publicly_accessible
 
-  performance_insights_enabled = "${var.performance_insights_enabled}"
+  performance_insights_enabled = var.performance_insights_enabled
 
-  tags = "${merge(var.tags, map("Name", "${var.name_prefix}-instance-${count.index + 1}"))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "${var.name_prefix}-instance-${count.index + 1}"
+    },
+  )
 }
 
 resource "aws_db_subnet_group" "main" {
   name        = "${var.name_prefix}-subnet-group"
   description = "Terraformed subnet group."
-  subnet_ids  = ["${var.subnet_ids}"]
+  subnet_ids  = var.subnet_ids
 
-  tags = "${merge(var.tags, map("Name", "${var.name_prefix}-subnet-group"))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "${var.name_prefix}-subnet-group"
+    },
+  )
 }
 
 resource "aws_security_group" "main" {
   name        = "${var.name_prefix}-sg"
   description = "Terraformed security group."
-  vpc_id      = "${var.vpc_id}"
+  vpc_id      = var.vpc_id
 
-  tags = "${merge(var.tags, map("Name", "${var.name_prefix}-sg"))}"
+  tags = merge(
+    var.tags,
+    {
+      "Name" = "${var.name_prefix}-sg"
+    },
+  )
 }
 
 resource "aws_security_group_rule" "egress" {
-  security_group_id = "${aws_security_group.main.id}"
+  security_group_id = aws_security_group.main.id
   type              = "egress"
   protocol          = "-1"
   from_port         = 0
@@ -73,3 +94,4 @@ resource "aws_security_group_rule" "egress" {
   cidr_blocks       = ["0.0.0.0/0"]
   ipv6_cidr_blocks  = ["::/0"]
 }
+
