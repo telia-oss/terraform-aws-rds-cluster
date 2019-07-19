@@ -6,7 +6,7 @@ data "aws_availability_zones" "available" {
 
 resource "random_string" "suffix" {
   length  = 8
-  special = "false"
+  special = false
 }
 
 resource "aws_rds_cluster" "main" {
@@ -22,7 +22,7 @@ resource "aws_rds_cluster" "main" {
   preferred_backup_window      = "02:00-03:00"
   preferred_maintenance_window = "wed:04:00-wed:04:30"
   snapshot_identifier          = var.snapshot_identifier
-  final_snapshot_identifier    = "${var.name_prefix}-final-${random_string.suffix.id}"
+  final_snapshot_identifier    = "${var.name_prefix}-final-${random_string.suffix.result}"
   skip_final_snapshot          = var.skip_final_snapshot
   vpc_security_group_ids       = [aws_security_group.main.id]
 
