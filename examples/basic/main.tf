@@ -3,7 +3,8 @@ terraform {
 }
 
 provider "aws" {
-  region = "eu-west-1"
+  version = ">= 2.17"
+  region  = "eu-west-1"
 }
 
 data "aws_vpc" "main" {
@@ -17,10 +18,10 @@ data "aws_subnet_ids" "main" {
 module "rds" {
   source = "../../"
 
-  name_prefix = "example"
-  username    = "test"
-  password    = "SomePassword123"
-  port        = "5000"
+  name_prefix = var.name_prefix
+  username    = "superuser"
+  password    = "dolphins"
+  port        = 5000
   vpc_id      = data.aws_vpc.main.id
   subnet_ids  = data.aws_subnet_ids.main.ids
 
@@ -29,16 +30,3 @@ module "rds" {
     terraform   = "True"
   }
 }
-
-output "security_group_id" {
-  value = module.rds.security_group_id
-}
-
-output "endpoint" {
-  value = module.rds.endpoint
-}
-
-output "port" {
-  value = module.rds.port
-}
-
