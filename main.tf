@@ -10,7 +10,7 @@ resource "random_string" "suffix" {
 }
 
 resource "aws_rds_cluster" "main" {
-  depends_on                   = ["aws_db_subnet_group.main"]
+  depends_on                   = [aws_db_subnet_group.main]
   cluster_identifier           = "${var.name_prefix}-cluster"
   database_name                = var.database_name
   master_username              = var.username
