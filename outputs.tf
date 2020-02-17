@@ -18,7 +18,7 @@ output "arn" {
 
 output "security_group_id" {
   description = "The ID of the security group."
-  value       = aws_security_group.main.id
+  value       = local.security_group_id
 }
 
 output "subnet_group_id" {
@@ -50,4 +50,3 @@ output "database_name" {
   description = "Name for the automatically created database."
   value       = aws_rds_cluster.main.database_name
 }
-

@@ -20,7 +20,7 @@ module "rds" {
 
   name_prefix = var.name_prefix
   username    = "superuser"
-  password    = "dolphins"
+  password    = "password"
   port        = 5000
   vpc_id      = data.aws_vpc.main.id
   subnet_ids  = data.aws_subnet_ids.main.ids
