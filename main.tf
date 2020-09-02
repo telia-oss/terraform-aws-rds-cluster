@@ -35,6 +35,12 @@ resource "aws_rds_cluster" "main" {
       "Name" = "${var.name_prefix}-cluster"
     },
   )
+
+  lifecycle {
+    ignore_changes = [
+      engine_version,
+    ]
+  }
 }
 
 resource "aws_rds_cluster_instance" "main" {
@@ -54,6 +60,12 @@ resource "aws_rds_cluster_instance" "main" {
       "Name" = "${var.name_prefix}-instance-${count.index + 1}"
     },
   )
+
+  lifecycle {
+    ignore_changes = [
+      engine_version,
+    ]
+  }
 }
 
 resource "aws_db_subnet_group" "main" {
