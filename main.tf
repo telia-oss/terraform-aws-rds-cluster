@@ -28,6 +28,7 @@ resource "aws_rds_cluster" "main" {
   skip_final_snapshot          = var.skip_final_snapshot
   storage_encrypted            = var.storage_encrypted
   kms_key_id                   = var.kms_key_arn
+  iam_roles                    = var.iam_roles
 
   tags = merge(
     var.tags,

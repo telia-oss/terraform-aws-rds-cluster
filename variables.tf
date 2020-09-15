@@ -104,3 +104,8 @@ variable "tags" {
   default     = {}
 }
 
+variable "iam_roles" {
+  description = "(Optional) A List of ARNs for the IAM roles to associate to the RDS Cluster."
+  type        = list(string)
+  default     = null
+}
