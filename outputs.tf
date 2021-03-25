@@ -36,6 +36,11 @@ output "endpoint" {
   value       = aws_rds_cluster.main.endpoint
 }
 
+output "reader_endpoint" {
+  description = "A read-only endpoint for the Aurora cluster, automatically load-balanced across replicas"
+  value       = aws_rds_cluster.main.reader_endpoint
+}
+
 output "port" {
   description = "The database port."
   value       = aws_rds_cluster.main.port

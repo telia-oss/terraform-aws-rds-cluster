@@ -85,18 +85,17 @@ resource "aws_rds_cluster" "main" {
     },
   )
 
-
   lifecycle {
     create_before_destroy = true
 
     ignore_changes = [
       # Ignore changes to AZs, because Amazon will set these
       availability_zones,
+      engine_version,
     ]
   }
 
   apply_immediately = var.apply_immediately
-
 }
 
 resource "aws_rds_cluster_instance" "main" {
@@ -127,6 +126,11 @@ resource "aws_rds_cluster_instance" "main" {
 
   apply_immediately = var.apply_immediately
 
+  lifecycle {
+    ignore_changes = [
+      engine_version,
+    ]
+  }
 }
 
 resource "aws_db_subnet_group" "main" {
