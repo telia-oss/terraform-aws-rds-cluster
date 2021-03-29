@@ -10,7 +10,7 @@ locals {
 
   security_group_id = join("", aws_security_group.main.*.id)
 
-  name = "${var.name_prefix}-${var.engine}"
+  name = var.name_prefix
 
   instances_required = var.replica_scale_enabled ? var.replica_scale_min : var.replica_count
 }
