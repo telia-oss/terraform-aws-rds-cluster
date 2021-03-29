@@ -33,8 +33,8 @@ resource "aws_cloudwatch_metric_alarm" "alarm_rds_CPU_writer" {
   statistic           = "Maximum"
   threshold           = var.cloudwatch_max_cpu
   alarm_description   = "RDS CPU Alarm for ${aws_rds_cluster.main.id} writer"
-  alarm_actions       = ["${var.cloudwatch_sns_topic}"]
-  ok_actions          = ["${var.cloudwatch_sns_topic}"]
+  alarm_actions       = [var.cloudwatch_sns_topic]
+  ok_actions          = [var.cloudwatch_sns_topic]
 
   dimensions = {
     DBClusterIdentifier = aws_rds_cluster.main.id
