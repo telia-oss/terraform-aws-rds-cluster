@@ -92,11 +92,6 @@ variable "replication_source_identifier" {
   default     = ""
 }
 
-variable "source_region" {
-  description = "The source region for an encrypted replica DB cluster."
-  default     = ""
-}
-
 variable "publicly_accessible" {
   description = "Bool to control if instances is publicly accessible."
   type        = bool
@@ -217,22 +212,9 @@ variable "performance_insights_enabled" {
   default     = false
 }
 
-variable "performance_insights_kms_key_id" {
-  description = "The ARN for the KMS key to encrypt Performance Insights data."
-  type        = string
-  default     = ""
-}
-
 variable "predefined_metric_type" {
   description = "The metric type to scale on. Valid values are RDSReaderAverageCPUUtilization and RDSReaderAverageDatabaseConnections."
   default     = "RDSReaderAverageCPUUtilization"
-}
-
-
-variable "auto_minor_version_upgrade" {
-  description = "Determines whether minor engine upgrades will be performed automatically in the maintenance window"
-  type        = bool
-  default     = true
 }
 
 variable "db_parameter_group_name" {
@@ -311,12 +293,6 @@ variable "cloudwatch_max_cpu" {
   default = "85"
 }
 
-variable "cloudwatch_max_replica_lag" {
-  type        = string
-  default     = "2000"
-  description = "Maximum Aurora replica lag in milliseconds above which to alarm"
-}
-
 variable "cloudwatch_eval_period_connections" {
   description = "Evaluation period for the DB connections alarms"
   type        = number
@@ -327,13 +303,6 @@ variable "cloudwatch_eval_period_cpu" {
   description = "Evaluation period for the DB CPU alarms"
   type        = number
   default     = 2
-}
-
-variable "cloudwatch_eval_period_replica_lag" {
-  description = "Evaluation period for the DB replica lag alarm"
-
-  type    = number
-  default = 5
 }
 
 variable "replica_scale_enabled" {
