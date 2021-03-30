@@ -12,7 +12,7 @@ locals {
 
   name = var.name_prefix
 
-  instances_required = var.replica_scale_enabled ? var.replica_scale_min : var.replica_count
+  instances_required = var.replica_scale_enabled ? var.replica_scale_min : var.instance_count
 }
 
 # -------------------------------------------------------------------------------
@@ -48,7 +48,7 @@ resource "aws_rds_cluster" "main" {
   preferred_backup_window      = var.preferred_backup_window
   preferred_maintenance_window = var.preferred_maintenance_window
   snapshot_identifier          = var.snapshot_identifier
-  final_snapshot_identifier    = "${var.final_snapshot_identifier_prefix}-${local.name}-final-${random_string.suffix.result}"
+  final_snapshot_identifier    = "${join("-", compact([var.final_snapshot_identifier_prefix, local.name]))}-final-${random_string.suffix.result}"
   copy_tags_to_snapshot        = var.copy_tags_to_snapshot
   skip_final_snapshot          = var.skip_final_snapshot
 
@@ -116,7 +116,6 @@ resource "aws_rds_cluster_instance" "main" {
   monitoring_interval          = var.monitoring_interval
   preferred_maintenance_window = var.preferred_maintenance_window
 
-
   tags = merge(
     var.tags,
     {
@@ -135,7 +134,7 @@ resource "aws_rds_cluster_instance" "main" {
 
 resource "aws_db_subnet_group" "main" {
   name        = "${var.name_prefix}-subnet-group"
-  description = "For ${var.engine} cluster ${local.name}"
+  description = "Terraformed RDS ${local.name}"
   subnet_ids  = var.subnet_ids
 
   tags = merge(
@@ -173,11 +172,10 @@ resource "aws_security_group_rule" "default_ingress" {
   security_group_id        = local.security_group_id
 }
 
-
 resource "aws_security_group_rule" "cidr_ingress" {
   count = var.create_security_group && length(var.allowed_cidr_blocks) > 0 ? 1 : 0
 
-  description = "For ${var.engine} cluster ${local.name} for ingress CIDRs"
+  description = "RDS cluster ${local.name} ingress CIDRs"
 
   type              = "ingress"
   from_port         = aws_rds_cluster.main.port
@@ -188,9 +186,9 @@ resource "aws_security_group_rule" "cidr_ingress" {
 }
 
 resource "aws_security_group_rule" "egress" {
+  count = var.create_security_group && var.vpc_id != "" ? 1 : 0
 
-  count = var.create_security_group ? length(var.security_groups) : 0
-
+  description = "RDS cluster ${local.name} egress CIDRs"
 
   security_group_id = local.security_group_id
   type              = "egress"

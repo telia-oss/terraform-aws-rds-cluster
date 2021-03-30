@@ -63,7 +63,6 @@ variable "engine_mode" {
   default     = "provisioned"
 }
 
-
 variable "enable_http_endpoint" {
   description = "Enable HTTP endpoint (data API). Only valid when engine_mode is set to serverless."
   type        = bool
@@ -86,11 +85,6 @@ variable "global_cluster_identifier" {
   description = "The global cluster identifier specified on aws_rds_global_cluster."
   type        = string
   default     = ""
-}
-
-variable "replica_count" {
-  description = "Number of reader nodes to create.  If `replica_scale_enable` is `true`, the value of `replica_scale_min` is used instead."
-  default     = 1
 }
 
 variable "replication_source_identifier" {
@@ -136,7 +130,7 @@ variable "snapshot_identifier" {
 variable "final_snapshot_identifier_prefix" {
   description = "The prefix name to use when creating a final snapshot on cluster destroy, appends a random 8 digits to name to ensure it's unique too."
   type        = string
-  default     = "final"
+  default     = ""
 }
 
 variable "copy_tags_to_snapshot" {
@@ -162,7 +156,6 @@ variable "backup_retention_period" {
   type        = number
   default     = 7
 }
-
 
 variable "backtrack_window" {
   description = "The target backtrack window, in seconds. Only available for aurora engine currently. To disable backtracking, set this value to 0. Defaults to 0. Must be between 0 and 259200 (72 hours)"
@@ -191,7 +184,7 @@ variable "create_security_group" {
 variable "security_group_description" {
   description = "The description of the security group. If value is set to empty string it will contain cluster name in the description."
   type        = string
-  default     = "Managed by Terraform"
+  default     = "Terraformed security group."
 }
 
 variable "security_groups" {
